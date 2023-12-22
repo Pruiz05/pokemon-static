@@ -5,13 +5,13 @@ import { NextPage } from 'next'
 import { Button } from '@nextui-org/react'
 import { Layout } from '@/components/layouts'
 import { pokeApi } from '@/api';
-import { Pokemon, PokemonListResponse } from '@/interfaces';
+import { SmallPokemon, PokemonListResponse } from '@/interfaces';
 import { PokemonCard } from '@/components/pokemon';
 
 const inter = Inter({ subsets: ['latin'] })
 
 interface HomeProps {
-  pokemons: Pokemon[]
+  pokemons: SmallPokemon[]
 }
 
 const Home: NextPage<HomeProps> = ({ pokemons }) => {
@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   const { data } = await pokeApi.get<PokemonListResponse>('/pokemon?limit=151')
 
-  const pokemons: Pokemon[] = data.results.map((pokemon, i) => ({
+  const pokemons: SmallPokemon[] = data.results.map((pokemon, i) => ({
     ...pokemon,
     id: i + 1,
     img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${i + 1}.svg`
