@@ -1,8 +1,6 @@
 import { Inter } from 'next/font/google'
-
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticProps } from 'next';
 import { NextPage } from 'next'
-import { Button } from '@nextui-org/react'
 import { Layout } from '@/components/layouts'
 import { pokeApi } from '@/api';
 import { SmallPokemon, PokemonListResponse } from '@/interfaces';
@@ -15,15 +13,12 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ pokemons }) => {
-  console.log(pokemons)
   return (
     <Layout>
-      <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 p-2">
-        {
-          pokemons.map((pokemon) => (
-            <PokemonCard key={pokemon.id} pokemon={pokemon} />
-          ))
-        }
+      <div className="gap-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 p-2">
+        {pokemons.map((pokemon) => (
+          <PokemonCard key={pokemon.id} pokemon={pokemon} />
+        ))}
       </div>
     </Layout>
   )

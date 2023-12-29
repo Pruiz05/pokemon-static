@@ -1,12 +1,9 @@
 import { Spacer } from '@nextui-org/react'
-import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-
 export const Navbar = () => {
-
     return (
         <div style={{
             display: 'flex',
@@ -25,15 +22,12 @@ export const Navbar = () => {
                 </span>
 
             </Link>
-
-
             <Spacer style={{
                 flex: 1
             }} />
 
             <Link href='/favorites'>
-
-                <p> Favoritos</p>
+                <p> Favorites</p>
             </Link>
         </div>
     )
