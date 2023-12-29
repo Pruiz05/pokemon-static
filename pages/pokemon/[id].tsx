@@ -84,23 +84,44 @@ const PokemonPage: NextPage<PokemonPageProps> = ({ pokemon }) => {
     )
 }
 
-export const getStaticPaths: GetStaticPaths = async (ctx) => {
-    const pokemon151 = [...Array(151)].map((value, index) => `${index + 1}`)
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const { id } = params as { id: string }
+
+    const pokemon = await getPokemonInfo(id)
+
+    if (!pokemon) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
     return {
-        paths: pokemon151.map(id => ({
-            params: { id }
-        })),
-        fallback: false
+        props: {
+            pokemon
+        },
+        // Next.js will attempt to re-generate the page:
+        // - When a request comes in
+        // - At most once every 24 hours
+        revalidate: 86400, // in seconds
     }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const { id } = params as { id: string }
-    return {
-        props: {
-            pokemon: await getPokemonInfo(id)
-        }
-    }
+export const getStaticPaths: GetStaticPaths = async (ctx) => {
+    const pokemon151 = [...Array(151)].map((value, index) => `${index + 1}`)
+
+    const paths = pokemon151.map(id => ({
+        params: { id }
+    }))
+
+    return { paths, fallback: 'blocking' }
 }
+
 
 export default PokemonPage
